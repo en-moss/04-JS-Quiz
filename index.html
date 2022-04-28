@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="./assets/style.css" rel="stylesheet">
+        <title>JS Quiz</title>
+    </head>
+
+    <body>
+        <main>
+            <div id="landingPage" class="appear">
+                <h1>Coding Quiz Challenge</h1>
+                <br>
+                <p>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
+                <button type="button" id="begin">Begin!</button>
+            </div>
+
+            <div id="timer" class="vanish">
+                <h2 class="timer-danger">Timer</h2>
+                <p id="seconds" class="timer-danger"></p>
+            </div>
+
+            <div id="score-keep" class="vanish">
+                <h2>Score</h2>
+                <p id="cur-score"></p>
+            </div>
+
+            <div id="quizPage" class="vanish">
+                <h2 id="quiz-q"></h2>
+                <div id="options">
+                    <button type="button"></button>
+                    <button type="button"></button>
+                    <button type="button"></button>
+                    <button type="button"></button>
+                </div>
+                <p></p>
+            </div>
+
+            <div id="donePage" class="vanish">
+                <h2>All done!</h2>
+                <!-- todo, add on final score page and store in local storage -->
+                <p id="final-score"></p>
+                <form>
+                    <label for="initials">Please enter your initials</label><br>
+                    <input type="text" id="initials" name="initials">
+                </form>
+                <button type="submit" id="submit">Submit</button>
+            </div>
+
+            <div id="scoresPage" class="vanish">
+                <h2>Highscores</h2>
+                <p></p>
+                <button type="button">Go Back</button>
+                <button type="reset">Clear Highscores</button>
+            </div>
+            <script src="./assets/script.js"></script>
+        </main>
+    </body>
+</html>

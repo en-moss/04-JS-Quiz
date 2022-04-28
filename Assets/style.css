@@ -1,0 +1,46 @@
+* {
+    font-family: 'Courier New', Courier, monospace;
+    color: rgb(103, 255, 0);
+    background-color: rgb(41, 39, 39);
+}
+
+main {
+    display: flex;
+}
+
+button {
+    background-color: black;
+    color: rgb(103, 255, 0);
+    border-radius: 5px;
+    padding: .5rem .75rem;
+    font-weight: bolder;
+}
+
+.vanish {
+    display: none;
+}
+
+.timer-style {
+    position: absolute;
+    right: 0;
+    border: 2px solid salmon;
+    border-radius: 5px;
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.score-style {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border: 2px solid salmon;
+    border-radius: 5px;
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.timer-danger {
+    background-color: inherit;
+    color: inherit;
+    font-weight: bolder;
+}
