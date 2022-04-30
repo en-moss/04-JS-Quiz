@@ -14,6 +14,7 @@ let score = 0;
 let secondsLeft = 20;
 let count = 0;
 let timer;
+let gamesPlayed;
 
 let landingPage = document.getElementById('landingPage');
 let timerEl = document.getElementById('timer');
@@ -28,6 +29,8 @@ let scoreBlock = document.getElementById('score-keep');
 let curScoreEl = document.getElementById('cur-score');
 let finalScoreEl = document.getElementById('final-score');
 let submitEl = document.getElementById('submit');
+let initials = document.getElementById('initials');
+let highScoreEl = document.getElementById('high-scores');
 
 beginButton.addEventListener('click', beginGame);
 
@@ -51,7 +54,13 @@ function tickTock() {
 
     if (secondsLeft <= 0) {
     secondsLeft = 0;
+    secondsEl.textContent = secondsLeft;
     clearInterval(timer);
+    };
+    if (secondsLeft === 0) {
+        quizPage.setAttribute('class', 'vanish');
+        donePage.setAttribute('class', '');
+        finalScoreEl.textContent = 'Your final score is: ' + score;
     };
 };
 
@@ -94,7 +103,7 @@ function compare(e) {
     };
     count++;
 
-    if (count > 4 || secondsLeft <= 0) {
+    if (count > questions.length - 1) {
         quizPage.setAttribute('class', 'vanish');
         donePage.setAttribute('class', '');
         finalScoreEl.textContent = 'Your final score is: ' + score;
@@ -104,4 +113,59 @@ function compare(e) {
     };
 };
 
-// submitEl.addEventListener('click', #)
+submitEl.addEventListener('click', function() {
+    saveScores();
+    trackScores();
+})
+
+// function save() {
+//     let new_data = document.getElementById('input').value;
+
+//     if (localStorage.getItem('data') == null) {
+//         localStorage.setItem('data', '[]');
+//     };
+
+//     var old_data = JSON.parse(localStorage.getItem('data'));
+//     old_data.push(new_data);
+
+//     localStorage.setItem('data', JSON.stringify(old_data));
+// }
+
+function saveScores() {
+    if (!initials.value) {
+        window.alert("You must enter your initials");
+        return;
+    };
+
+    localStorage.setItem('data', '[]');
+
+    let highScore = {
+        initials: initials.value.trim(),
+        score: score
+    };
+
+    let scoreData = JSON.parse(localStorage.getItem('data'));
+    scoreData.push(highScore);
+
+    localStorage.setItem('data', JSON.stringify(scoreData));
+
+    donePage.setAttribute('class', 'vanish');
+    scoresPage.setAttribute('class', '');
+};
+
+function trackScores() {
+    if (JSON.parse(localStorage.getItem('gameCount')) == null) {
+        gamesPlayed = 1;
+    }
+    else {
+        gamesPlayed = JSON.parse(localStorage.getItem('gameCount'));
+    };
+    console.log(gamesPlayed);
+    let tag = document.createElement('p');
+    let prevScore = JSON.parse(localStorage.getItem('data'));
+    tag.textContent = prevScore[gamesPlayed-1].initials + " " + prevScore[gamesPlayed-1].score;
+    highScoreEl.appendChild(tag);
+    gamesPlayed++;
+    localStorage.setItem('gameCount', JSON.stringify(gamesPlayed));
+};
+
