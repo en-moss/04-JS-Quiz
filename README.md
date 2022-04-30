@@ -12,4 +12,4 @@ I was tasked with creating a short quiz on JavaScript concepts that would be abl
 
 ![A screenshot of the javascript quiz] (./Assets/screenshot1.png)
 ![A screenshot of the javascript quiz] (/Assets/screenshot2.png)
-![A screenshot of the javascript quiz] (.\Assets\screenshot3.png)
+![A screenshot of the javascript quiz] (Assets\screenshot3.png?raw=true)
