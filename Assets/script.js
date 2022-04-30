@@ -43,7 +43,7 @@ function beginGame() {
     timerEl.setAttribute('class', 'timer-style');
     scoreBlock.setAttribute('class', 'score-style');
     score = 0;
-    secondsLeft = 30;
+    secondsLeft = 60;
     count = 0;
     curScoreEl.textContent = score;
     ansIterate();
