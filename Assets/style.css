@@ -44,3 +44,9 @@ button {
     color: inherit;
     font-weight: bolder;
 }
+
+.right-wrong {
+    color: aqua;
+    font-weight: 900;
+    font-size: larger;
+};

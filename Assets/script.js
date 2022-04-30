@@ -10,9 +10,9 @@ let answers = [
 
 let correctAns = ['alerts', 'curly brackets', 'all of the above', 'quotes', 'console.log'];
 
-let score = 0;
-let secondsLeft = 20;
-let count = 0;
+let score;
+let secondsLeft;
+let count;
 let timer;
 let gamesPlayed;
 
@@ -31,6 +31,9 @@ let finalScoreEl = document.getElementById('final-score');
 let submitEl = document.getElementById('submit');
 let initials = document.getElementById('initials');
 let highScoreEl = document.getElementById('high-scores');
+let replayEl = document.getElementById('replay');
+let clearEl = document.getElementById('clear');
+let rightWrong = document.getElementById('right-wrong');
 
 beginButton.addEventListener('click', beginGame);
 
@@ -39,6 +42,9 @@ function beginGame() {
     quizPage.setAttribute('class', '');
     timerEl.setAttribute('class', 'timer-style');
     scoreBlock.setAttribute('class', 'score-style');
+    score = 0;
+    secondsLeft = 30;
+    count = 0;
     curScoreEl.textContent = score;
     ansIterate();
     timer = setInterval(tickTock, 1000);
@@ -48,9 +54,14 @@ function tickTock() {
     secondsLeft--;
     secondsEl.textContent = secondsLeft;
 
-    // if (secondsLeft < 10) {
-    //     danger();
-    // };
+    if (secondsLeft < 10) {
+        timerEl.style.backgroundColor = 'red';
+        timerEl.style.color = 'black';
+    }
+    else {
+        timerEl.style.backgroundColor = '';
+        timerEl.style.color = '';
+    };
 
     if (secondsLeft <= 0) {
     secondsLeft = 0;
@@ -61,21 +72,10 @@ function tickTock() {
         quizPage.setAttribute('class', 'vanish');
         donePage.setAttribute('class', '');
         finalScoreEl.textContent = 'Your final score is: ' + score;
+        timerEl.setAttribute('class', 'vanish');
+        scoreBlock.setAttribute('class', 'vanish');
     };
 };
-
-// function danger() {
-//     setInterval(function() {
-//         if (timerEl.style.color = rgb(103, 255, 0)) {
-//             timerEl.style.backgroundColor = 'red';
-//             timerEl.style.color = 'black';
-//         }
-//         else {
-//             timerEl.style.backgroundColor = '';
-//             timerEl.style.color = rgb(103, 255, 0);
-//         };
-//     }, 500);
-// };
 
 function scoreKeep() {
     score += 5 + 0.25 * secondsLeft;
@@ -97,9 +97,19 @@ function compare(e) {
     //compares whether the button pressed matches the correct answer
     if (e.target.innerHTML === correctAns[count]) {
         scoreKeep();
+        rightWrong.setAttribute('class', 'right-wrong');
+        rightWrong.textContent = 'Correct!';
+        setTimeout(function() {
+            rightWrong.setAttribute('class', 'vanish');
+        }, 600);
     }
     else {
         secondsLeft -= 10;
+        rightWrong.setAttribute('class', 'right-wrong');
+        rightWrong.textContent = 'Wrong!';
+        setTimeout(function() {
+            rightWrong.setAttribute('class', 'vanish');
+        }, 600);
     };
     count++;
 
@@ -107,6 +117,10 @@ function compare(e) {
         quizPage.setAttribute('class', 'vanish');
         donePage.setAttribute('class', '');
         finalScoreEl.textContent = 'Your final score is: ' + score;
+        secondsLeft = 0;
+        timerEl.setAttribute('class', 'vanish');
+        clearInterval(timer);
+        scoreBlock.setAttribute('class', 'vanish');
     }
     else {
         ansIterate();
@@ -118,35 +132,23 @@ submitEl.addEventListener('click', function() {
     trackScores();
 })
 
-// function save() {
-//     let new_data = document.getElementById('input').value;
-
-//     if (localStorage.getItem('data') == null) {
-//         localStorage.setItem('data', '[]');
-//     };
-
-//     var old_data = JSON.parse(localStorage.getItem('data'));
-//     old_data.push(new_data);
-
-//     localStorage.setItem('data', JSON.stringify(old_data));
-// }
-
 function saveScores() {
     if (!initials.value) {
         window.alert("You must enter your initials");
         return;
     };
 
-    localStorage.setItem('data', '[]');
-
     let highScore = {
         initials: initials.value.trim(),
         score: score
     };
-
+    
+    if (JSON.parse(localStorage.getItem('data')) == null) {
+        localStorage.setItem('data', '[]');
+    }
+    
     let scoreData = JSON.parse(localStorage.getItem('data'));
     scoreData.push(highScore);
-
     localStorage.setItem('data', JSON.stringify(scoreData));
 
     donePage.setAttribute('class', 'vanish');
@@ -154,18 +156,41 @@ function saveScores() {
 };
 
 function trackScores() {
+    gamesPlayed = JSON.parse(localStorage.getItem('gameCount'));
+    
     if (JSON.parse(localStorage.getItem('gameCount')) == null) {
-        gamesPlayed = 1;
+        gamesPlayed = 0;
     }
     else {
         gamesPlayed = JSON.parse(localStorage.getItem('gameCount'));
     };
-    console.log(gamesPlayed);
-    let tag = document.createElement('p');
-    let prevScore = JSON.parse(localStorage.getItem('data'));
-    tag.textContent = prevScore[gamesPlayed-1].initials + " " + prevScore[gamesPlayed-1].score;
-    highScoreEl.appendChild(tag);
+
+    while (highScoreEl.firstChild) {
+        highScoreEl.removeChild(highScoreEl.lastChild);
+    };
+
+    for (i = 0; i < gamesPlayed+1; i++) {
+        let prevScore = JSON.parse(localStorage.getItem('data'));
+        let tag = document.createElement('p');
+        tag.textContent = i+1 + '. ' + prevScore[i].initials + " " + prevScore[i].score;
+        highScoreEl.appendChild(tag);
+    };
     gamesPlayed++;
     localStorage.setItem('gameCount', JSON.stringify(gamesPlayed));
 };
 
+replayEl.addEventListener('click', replay);
+clearEl.addEventListener('click', clear);
+
+function replay() {
+    scoresPage.setAttribute('class', 'vanish');
+    beginGame();
+};
+
+function clear() {
+    localStorage.removeItem('gameCount');
+    localStorage.removeItem('data');
+    while (highScoreEl.firstChild) {
+        highScoreEl.removeChild(highScoreEl.lastChild);
+    }
+}
