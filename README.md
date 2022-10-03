@@ -1,4 +1,4 @@
-# 04 JS Quiz
+# JS Quiz
 
 ## Description
 
